@@ -14,6 +14,7 @@ export default class MainScene extends Phaser.Scene {
   score: number;
   scoreLabel: Phaser.GameObjects.BitmapText;
   projectile: Phaser.GameObjects.Group;
+  enemies: Phaser.Physics.Arcade.Group;
 
   constructor() {
     super({ key: 'MainScene' });
@@ -27,17 +28,20 @@ export default class MainScene extends Phaser.Scene {
     this.ship1 = this.add.sprite(this.scale.width/2 -50, this.scale.height/2, "ship");
     this.ship2 = this.add.sprite(this.scale.width/2 -25, this.scale.height/2, "ship2");
     this.ship3 = this.add.sprite(this.scale.width/2 + 50, this.scale.height/2, "ship3");
-    this.player = this.physics.add.sprite(this.scale.width/2 +25, this.scale.height/2, "player");
+    this.player = this.physics.add.sprite(this.scale.width/2 +25, this.scale.height, "player");
     this.cursorKeys = this.input.keyboard.createCursorKeys();
     this.player.setCollideWorldBounds(true);
     this.spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
-    this.physics.add.overlap(this.player, this.ship1, this.hitplayer);
-    this.physics.add.overlap(this.player, this.ship2, this.hitplayer);
-    this.physics.add.overlap(this.player, this.ship3, this.hitplayer);
     this.score = 0;
     this.projectile = this.add.group();
 
+    this.enemies = this.physics.add.group();
+    this.enemies.add(this.ship1);
+    this.enemies.add(this.ship2);
+    this.enemies.add(this.ship3);
+
+    this.physics.add.overlap(this.projectile, this.enemies, this.hitShip);
     
   }
 
@@ -47,16 +51,18 @@ export default class MainScene extends Phaser.Scene {
       this.resetPos(obj2);
     }
   }
-  hitplayer(player, ob1){
-    this.resetPos(ob1);
-    this.score += 15;
-    this.scoreLabel.text = "SCORE" + this.score;
-  }
+
   resetPos(obj1){
     obj1.y = 0;
     let randomX = Phaser.Math.Between(0, this.scale.width);
     obj1 = randomX;
   }
+
+  hitShip(projectile, enemy){
+    projectile.disableBody(true, true);
+    enemy.disableBody(true, true);
+    this.score += 15;
+  } 
   shootBeam(){
     let beam = new Beam(this);
   }
