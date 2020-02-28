@@ -29,9 +29,9 @@ export default class MainScene extends Phaser.Scene {
     
   }
 
-  moveObject(obj1, speed){
-    obj1.y += speed;
-    if (obj1.y > this.scale.height){
+  moveObject(obj2, speed){
+    obj2.y += speed;
+    if (obj2.y > this.scale.height){
       this.resetPos(obj1);
     }
   }

@@ -1,4 +1,5 @@
 export default class PreloadScene extends Phaser.Scene {
+  background: Phaser.GameObjects.Image;
   constructor() {
     super({ key: 'PreloadScene' });
   }
@@ -11,6 +12,7 @@ export default class PreloadScene extends Phaser.Scene {
     this.load.image("ship3", "assets/spritesheets/ship3.png");
     this.load.image("explosion", "assets/spritesheets/explosions.png");
     this.load.spritesheet("beam", "assets/spritesheets/beam.png");
+    this.load.image("background","assets/images/background.png");
   }
 
   create() {
@@ -18,6 +20,10 @@ export default class PreloadScene extends Phaser.Scene {
     this.scene.start('MainScene');
 
     
+    this.scene.start("playGame");
+
+    this.background = this.add.image(0,0,"background");
+    this.background.setOrigin(0,0);
   }
 
 
