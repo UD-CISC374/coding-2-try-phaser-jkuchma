@@ -58,9 +58,9 @@ export default class MainScene extends Phaser.Scene {
     obj1 = randomX;
   }
 
-  hitShip(projectile, enemy){
-    projectile.disableBody(true, true);
-    enemy.disableBody(true, true);
+  hitShip(projectiles, enemy){
+    projectiles.destroy();
+    enemy.destroy();
     this.score += 15;
   } 
   shootBeam(){
