@@ -9,6 +9,8 @@ export default class MainScene extends Phaser.Scene {
   player: Phaser.Physics.Arcade.Sprite;
   cursorKeys: Phaser.Types.Input.Keyboard.CursorKeys;
   spacebar: Phaser.Input.Keyboard.Key;
+  score: number;
+  scoreLabel: Phaser.GameObjects.BitmapText;
 
   constructor() {
     super({ key: 'MainScene' });
@@ -26,7 +28,13 @@ export default class MainScene extends Phaser.Scene {
     this.cursorKeys = this.input.keyboard.createCursorKeys();
     this.player.setCollideWorldBounds(true);
     this.spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
-    
+
+    this.physics.add.overlap(this.player, this.ship1, this.hitplayer);
+    this.physics.add.overlap(this.player, this.ship2, this.hitplayer);
+    this.physics.add.overlap(this.player, this.ship3, this.hitplayer);
+    this.score = 0;
+
+    this.scoreLabel = this.add.bitmapText(10, 5, "pixelfont", "SCORE", 16);
   }
 
   moveObject(obj2, speed){
@@ -35,7 +43,11 @@ export default class MainScene extends Phaser.Scene {
       this.resetPos(obj2);
     }
   }
-
+  hitplayer(player, ob1){
+    this.resetPos(ob1);
+    this.score += 15;
+    this.scoreLabel.text = "SCORE" + this.score;
+  }
   resetPos(obj1){
     obj1.y = 0;
     let randomX = Phaser.Math.Between(0, this.scale.width);

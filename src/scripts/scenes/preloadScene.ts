@@ -24,6 +24,7 @@ export default class PreloadScene extends Phaser.Scene {
 
     this.background = this.add.image(0,0,"background");
     this.background.setOrigin(0,0);
+
   }
 
 
