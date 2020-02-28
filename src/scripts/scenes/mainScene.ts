@@ -34,7 +34,7 @@ export default class MainScene extends Phaser.Scene {
     this.physics.add.overlap(this.player, this.ship3, this.hitplayer);
     this.score = 0;
 
-    this.scoreLabel = this.add.bitmapText(10, 5, "pixelfont", "SCORE", 16);
+    
   }
 
   moveObject(obj2, speed){
