@@ -1,16 +1,19 @@
 import ExampleObject from '../objects/exampleObject';
+import {Beam} from './beam';
 
 export default class MainScene extends Phaser.Scene {
   private exampleObject: ExampleObject;
   ship1: Phaser.GameObjects.Image;
   ship2: Phaser.GameObjects.Image;
   ship3: Phaser.GameObjects.Image;
+  beam: Phaser.GameObjects.Sprite;
   background: Phaser.GameObjects.TileSprite;
   player: Phaser.Physics.Arcade.Sprite;
   cursorKeys: Phaser.Types.Input.Keyboard.CursorKeys;
   spacebar: Phaser.Input.Keyboard.Key;
   score: number;
   scoreLabel: Phaser.GameObjects.BitmapText;
+  projectile: Phaser.GameObjects.Group;
 
   constructor() {
     super({ key: 'MainScene' });
@@ -21,7 +24,7 @@ export default class MainScene extends Phaser.Scene {
     this.background = this.add.tileSprite(0, 0, this.scale.width, this.scale.height, "background");
     this.background.setOrigin(0,0);
 
-    this.ship1 = this.add.sprite(this.scale.width/2 -50, this.scale.height/2, "ship1");
+    this.ship1 = this.add.sprite(this.scale.width/2 -50, this.scale.height/2, "ship");
     this.ship2 = this.add.sprite(this.scale.width/2 -25, this.scale.height/2, "ship2");
     this.ship3 = this.add.sprite(this.scale.width/2 + 50, this.scale.height/2, "ship3");
     this.player = this.physics.add.sprite(this.scale.width/2 +25, this.scale.height/2, "player");
@@ -33,6 +36,7 @@ export default class MainScene extends Phaser.Scene {
     this.physics.add.overlap(this.player, this.ship2, this.hitplayer);
     this.physics.add.overlap(this.player, this.ship3, this.hitplayer);
     this.score = 0;
+    this.projectile = this.add.group();
 
     
   }
@@ -53,7 +57,9 @@ export default class MainScene extends Phaser.Scene {
     let randomX = Phaser.Math.Between(0, this.scale.width);
     obj1 = randomX;
   }
-
+  shootBeam(){
+    let beam = new Beam(this);
+  }
   update() {
     this.moveObject(this.ship1, 1);
     this.moveObject(this.ship2, 2);
@@ -63,7 +69,7 @@ export default class MainScene extends Phaser.Scene {
     this.background.tilePositionX -= 0.5;
     this.movePlayer();
     if (Phaser.Input.Keyboard.JustDown(this.spacebar)){
-      console.log("Fire!");
+      this.shootBeam();
     }
   }
 
