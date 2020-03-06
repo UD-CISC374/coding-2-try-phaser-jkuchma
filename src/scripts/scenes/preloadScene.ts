@@ -12,6 +12,10 @@ export default class PreloadScene extends Phaser.Scene {
     this.load.image("ship3", "assets/spritesheets/ship3.png");
     this.load.image("explosion", "assets/spritesheets/explosion.png");
     this.load.image("beam", "assets/spritesheets/beam.png");
+    this.load.bitmapFont("pixelFont", "assets/Font/font.png", "assets/Font/font.xml");
+    this.load.audio("audio_beam", ["assets/sounds/beam.ogg", "assets/sounds/beam.mp3"]);
+    this.load.audio("music", ["assets/sounds/sci-fi.ogg", "assets/sounds/sci-fi.mp3"]);
+    this.load.audio("audio_explosion", ["assets/sounds/explosion.ogg", "assets/sounds/explosion.mp3"]);
   }
 
   create() {

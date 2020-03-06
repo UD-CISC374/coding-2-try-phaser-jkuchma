@@ -15,6 +15,9 @@ export default class MainScene extends Phaser.Scene {
   scoreLabel: Phaser.GameObjects.BitmapText;
   projectile: Phaser.GameObjects.Group;
   enemies: Phaser.Physics.Arcade.Group;
+  beamSound: Phaser.Sound.BaseSound;
+  explosionSound: Phaser.Sound.BaseSound;
+  music: Phaser.Sound.BaseSound;
 
   constructor() {
     super({ key: 'MainScene' });
@@ -41,8 +44,22 @@ export default class MainScene extends Phaser.Scene {
     this.enemies.add(this.ship2);
     this.enemies.add(this.ship3);
 
-    this.physics.add.overlap(this.projectile, this.enemies, this.hitShip);
-    
+    this.physics.add.overlap(this.projectile, this.enemies, this.hitShip, undefined, this);
+    this.scoreLabel = this.add.bitmapText(10,5,"pixelFont", "SCORE", 16);
+    this.beamSound = this.sound.add("audio_beam");
+    this.explosionSound = this.sound.add("audio_explosion");
+    this.music = this.sound.add("music");
+
+    var musicConfig = {
+      mute: false,
+      volume: 1,
+      rate: 1,
+      detune: 0,
+      seek: 0,
+      loop: true,
+      delay: 0
+    }
+    this.music.play(musicConfig);
   }
 
   moveObject(obj2, speed){
@@ -60,11 +77,15 @@ export default class MainScene extends Phaser.Scene {
 
   hitShip(projectiles, enemy){
     projectiles.destroy();
-    enemy.destroy();
+    this.resetPos(enemy);
     this.score += 15;
+    this.scoreLabel.text = "SCORE " + this.score;
+    this.explosionSound.play();
+
   } 
   shootBeam(){
     let beam = new Beam(this);
+    this.beamSound.play();
   }
   update() {
     this.moveObject(this.ship1, 1);
